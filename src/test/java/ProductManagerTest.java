@@ -5,8 +5,9 @@ public class ProductManagerTest {
     ProductRepository repository = new ProductRepository();
     ProductManager manager = new ProductManager(repository);
     Product book = new Book(100, "Петровы в гриппе", 600, "Сальников А.");
-    Product smartphone = new Smartphone(200, "Samsung A71", 25000, "Samsung");
+    Product smartphone = new Smartphone(200, "Samsung", 25000, "Samsung");
     Product product = new Product(300, "Cake", 50);
+
     @Test
     void shouldAdd() {
         manager.add(book);
@@ -14,16 +15,18 @@ public class ProductManagerTest {
         Product[] actual = repository.findAll();
         Assertions.assertArrayEquals(expected, actual);
     }
+
     @Test
     void shouldAddAll() {
         manager.add(book);
         manager.add(smartphone);
         manager.add(product);
 
-        Product[] expected = { book, smartphone, product };
+        Product[] expected = {book, smartphone, product};
         Product[] actual = repository.findAll();
         Assertions.assertArrayEquals(expected, actual);
     }
+
     @Test
     void shouldSearch() {
         manager.add(book);
@@ -36,8 +39,8 @@ public class ProductManagerTest {
         Assertions.assertArrayEquals(expected, actual);
     }
 
-        @Test
-    void shouldSearchWhenProductsNotSuit() {
+    @Test
+    void searchNoExistProduct() {
         manager.add(book);
         manager.add(smartphone);
         manager.add(product);
@@ -48,4 +51,14 @@ public class ProductManagerTest {
         Assertions.assertArrayEquals(expected, actual);
     }
 
+    @Test
+    void searchExistProduct() {
+        manager.add(book);
+        manager.add(smartphone);
+        manager.add(product);
+        String name = "Samsung";
+        Product[] expected = {smartphone};
+        Product[] actual = manager.searchBy(name);
+        Assertions.assertArrayEquals(expected, actual);
+    }
 }
