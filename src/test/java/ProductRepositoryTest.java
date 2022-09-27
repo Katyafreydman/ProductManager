@@ -23,7 +23,7 @@ public class ProductRepositoryTest {
         repository.save(product);
         repository.removeById(100);
 
-        Product[] expected = { smartphone, product};
+        Product[] expected = {smartphone, product};
         Product[] actual = repository.findAll();
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -41,7 +41,18 @@ public class ProductRepositoryTest {
         Product[] actual = repository.findAll();
         Assertions.assertArrayEquals(expected, actual);
     }
-}
 
+    @Test
+    public void removeIncorrrectById() {
+        repository.save(book);
+        repository.save(smartphone);
+        repository.save(product);
+
+        Assertions.assertThrows(NotFoundException.class,
+                () -> repository.removeById(4)
+        );
+
+    }
+}
 
 
